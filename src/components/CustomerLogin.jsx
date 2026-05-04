@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./CustomerLogin.css";
 import { useNavigate } from 'react-router-dom';
 
@@ -6,8 +6,20 @@ function CustomerLogin() {
   const [tableNumber, setTableNumber] = useState("");
   const [pin, setPin] = useState("");
   const [error, setError] = useState('');
+  const [isTableLocked, setIsTableLocked] = useState(false); // YENİ: Masa numarasını kilitlemek için
 
   const navigate = useNavigate();
+
+  // YENİ EKLENEN RADAR: Sayfa açıldığında linkte "?table=X" var mı diye bakar
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const tableFromQR = queryParams.get('table');
+
+    if (tableFromQR) {
+      setTableNumber(tableFromQR); // Kutuyu otomatik doldur
+      setIsTableLocked(true); // Kutuyu kilitle (müşteri değiştiremesin)
+    }
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault(); 
@@ -27,13 +39,12 @@ function CustomerLogin() {
         // Backend "Giriş Başarılı" derse
         console.log("Token alındı:", data.token);
         
-        // YENİ: Backend'den gelen bileti ve masayı tarayıcının kalıcı hafızasına (cebine) koy!
+        // Backend'den gelen bileti ve masayı tarayıcının kalıcı hafızasına koy!
         localStorage.setItem('customerToken', data.token); 
         localStorage.setItem('tableNumber', tableNumber);
         
         navigate('/menu');
         
-        // NOT: İleride buraya sayfalar arası geçiş (React Router) kodumuzu ekleyeceğiz.
       } else {
         // Backend "Hatalı PIN" vs. derse, bu mesajı error state'ine at
         setError(data.message);
@@ -55,17 +66,12 @@ function CustomerLogin() {
         <h3 className="sub-title">QR MENÜ</h3>
         <h1 className="main-title">La Grande</h1>
         <p className="description">
-          Menüye erişmek için masa numaranızı ve size özel müşteri PIN'inizi
-          girin.  
-        </p>
-        <p className="description">
-          Menüye erişmek için masa numaranızı ve size özel müşteri PIN'inizi girin.
+          Menüye erişmek için masa numaranızı ve size özel müşteri PIN'inizi girin.  
         </p>
 
-        {/* YENİ: Eğer error kutusunun içi doluysa bu div ekranda görünür */}
+        {/* Eğer error kutusunun içi doluysa bu div ekranda görünür */}
         {error && <div style={{ color: '#ff4d4d', backgroundColor: '#331010', padding: '10px', borderRadius: '8px', marginBottom: '15px', border: '1px solid #ff4d4d' }}>{error}</div>}
 
-        <form onSubmit={handleLogin} className="login-form"></form>
         {/* Form Alanı */}
         <form onSubmit={handleLogin} className="login-form">
           <div className="input-group">
@@ -75,6 +81,8 @@ function CustomerLogin() {
               placeholder="Örn: 5"
               value={tableNumber}
               onChange={(e) => setTableNumber(e.target.value)}
+              readOnly={isTableLocked} // Kilitliyse müdahale edilemez
+              style={isTableLocked ? { backgroundColor: '#2a2a2a', color: '#888', cursor: 'not-allowed' } : {}}
             />
           </div>
           <div className="input-group">
