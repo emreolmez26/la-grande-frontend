@@ -1,0 +1,139 @@
+/* 1. EN DIŞTAKİ DUVAR (login-wrapper) */
+.login-wrapper {
+  /* Ekranın tamamını (yukarıdan aşağıya %100) kaplamasını sağlar */
+  min-height: 100vh; 
+  /* Tasarımdaki o çok koyu, zift gibi siyah arka plan rengi */
+  background-color: #0b0b0b; 
+  
+  /* İçindeki kutuyu tam merkeze (ortaya) getirmek için bu üçlüyü kullanırız: */
+  display: flex; 
+  justify-content: center; /* Yatayda ortalar */
+  align-items: center;     /* Dikeyde ortalar */
+  
+  /* Bütün sayfanın yazı tipini modern ve şık bir font yapar */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* 2. ORTADAKİ KOYU GRİ KART (login-card) */
+.login-card {
+  /* Duvardan bir tık daha açık bir gri veriyoruz ki kutu kendini belli etsin */
+  background-color: #1a1a1a; 
+  
+  /* İçindeki yazılar kutunun kenarlarına yapışmasın diye içeriye doğru nefes boşluğu verir */
+  padding: 40px; 
+  
+  /* Kutunun köşelerini tasarımdaki gibi hafif yuvarlatır */
+  border-radius: 12px; 
+  
+  /* Kutunun etrafına çok ince, koyu gri bir sınır çizgisi çeker (Premium his verir) */
+  border: 1px solid #333333;
+  
+  /* Ekran ne kadar büyük olursa olsun, kutu en fazla 400 piksel genişlesin */
+  width: 100%;
+  max-width: 400px; 
+}
+
+/* 3. YUVARLAK LOGO ALANI (.logo-circle) */
+.logo-circle {
+  width: 70px; /* Genişlik */
+  height: 70px; /* Yükseklik (İkisi eşit olmalı ki kare olsun) */
+  background-color: #FFC107; /* Tasarımdaki o can alıcı altın sarısı */
+  border-radius: 50%; /* Kareyi tam bir daireye (yuvarlağa) çevirir */
+  
+  /* Ortalamak için: Üstten 0, sağ-sol otomatik, alttan 20px boşluk */
+  margin: 0 auto 20px auto; 
+  
+  /* İçindeki LG yazısını tam dairenin ortasına almak için */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Logonun içindeki 'LG' yazısı */
+.logo-circle span {
+  color: #0b0b0b; /* Siyah renk yapalım ki sarının üstünde patlasın */
+  font-size: 24px;
+  font-weight: 800; /* Yazıyı epey kalınlaştırır */
+}
+
+/* 4. BAŞLIKLAR VE AÇIKLAMA METNİ */
+
+/* Küçük "QR MENÜ" yazısı (.sub-title) */
+.sub-title {
+  color: #FFC107; /* Altın sarısı */
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 4px; /* Harflerin arasını açmak çok premium bir his verir */
+  margin-bottom: 10px; /* Altındaki ana başlıkla arasına biraz mesafe koyar */
+}
+
+/* Büyük "La Grande" yazısı (.main-title) */
+.main-title {
+  color: #FFC107; 
+  font-size: 38px;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-family: Georgia, 'Times New Roman', serif; /* Görseldeki gibi tırnaklı, klasik ve şık bir yazı tipi */
+}
+
+/* Açıklama metni (.description) */
+.description {
+  color: #a0a0a0; /* Çok çiğ durmasın diye kırık, soluk bir açık gri */
+  font-size: 14px;
+  line-height: 1.6; /* Satır aralarını hafif açarak okunabilirliği artırır */
+  margin-bottom: 30px; /* Aşağıda yer alacak olan form ile arasına sağlam bir boşluk bırakır */
+}
+/* 5. FORM ELEMANLARI (İnputlar ve Buton) */
+
+.input-group {
+  text-align: left; /* Etiketler ve kutular sola hizalı başlasın */
+  margin-bottom: 20px; 
+}
+
+/* Etiketler (Masa Numarası, Müşteri PIN Kodu yazıları) */
+.input-group label {
+  display: block; 
+  color: #FFC107; /* Tasarımdaki gibi altın sarısı başlıklar */
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 8px; 
+}
+
+/* İnput kutularının kendisi */
+.input-group input {
+  width: 100%; 
+  box-sizing: border-box; /* Padding yüzünden kutunun dışarı taşmasını engeller */
+  padding: 14px; 
+  background-color: #0b0b0b; /* Duvarla aynı renk, kartın içinde gömülü dursun */
+  border: 1px solid #333333; /* İnce, zarif bir çerçeve */
+  border-radius: 8px; /* Tasarımdaki gibi hafif oval */
+  color: #ffffff; /* Müşteri yazı yazarken beyaz görünsün */
+  font-size: 16px;
+  outline: none; /* Tıklayınca çıkan varsayılan mavi çerçeveyi kaldırır */
+  transition: all 0.3s ease; /* Renk değişimini yumuşatır */
+}
+
+/* İnputa tıklandığında (focus) çerçevenin sarı parlaması */
+.input-group input:focus {
+  border-color: #FFC107;
+}
+
+/* Menüye Gir Butonu */
+.submit-btn {
+  width: 100%;
+  padding: 15px;
+  background-color: #FFC107; 
+  color: #0b0b0b; /* Sarının üstüne siyah yazı çok net durur */
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer; 
+  margin-top: 10px; 
+  transition: background-color 0.3s ease;
+}
+
+/* Butonun üstüne mouse ile gelince (hover) rengi bir tık koyulaşsın */
+.submit-btn:hover {
+  background-color: #e6ad06;
+}
