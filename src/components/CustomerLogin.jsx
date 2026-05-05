@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import "./CustomerLogin.css";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 function CustomerLogin() {
   const [tableNumber, setTableNumber] = useState("");
   const [pin, setPin] = useState("");
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [isTableLocked, setIsTableLocked] = useState(false); // YENİ: Masa numarasını kilitlemek için
 
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ function CustomerLogin() {
   // YENİ EKLENEN RADAR: Sayfa açıldığında linkte "?table=X" var mı diye bakar
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
-    const tableFromQR = queryParams.get('table');
+    const tableFromQR = queryParams.get("table");
 
     if (tableFromQR) {
       setTableNumber(tableFromQR); // Kutuyu otomatik doldur
@@ -22,29 +22,31 @@ function CustomerLogin() {
   }, []);
 
   const handleLogin = async (e) => {
-    e.preventDefault(); 
-    setError(''); // Yeni bir deneme yapıldığında eski hatayı ekrandan sil
+    e.preventDefault();
+    setError(""); // Yeni bir deneme yapıldığında eski hatayı ekrandan sil
 
     try {
-      const response =  await fetch("http://localhost:5000/api/tables/join", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        "https://cafe-backend-p04f.onrender.com/api/tables/join",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ tableNumber, pin }),
         },
-        body: JSON.stringify({ tableNumber, pin }),
-      });
+      );
 
       const data = await response.json();
       if (data.success) {
         // Backend "Giriş Başarılı" derse
         console.log("Token alındı:", data.token);
-        
+
         // Backend'den gelen bileti ve masayı tarayıcının kalıcı hafızasına koy!
-        localStorage.setItem('customerToken', data.token); 
-        localStorage.setItem('tableNumber', tableNumber);
-        
-        navigate('/menu');
-        
+        localStorage.setItem("customerToken", data.token);
+        localStorage.setItem("tableNumber", tableNumber);
+
+        navigate("/menu");
       } else {
         // Backend "Hatalı PIN" vs. derse, bu mesajı error state'ine at
         setError(data.message);
@@ -66,11 +68,25 @@ function CustomerLogin() {
         <h3 className="sub-title">QR MENÜ</h3>
         <h1 className="main-title">La Grande</h1>
         <p className="description">
-          Menüye erişmek için masa numaranızı ve size özel müşteri PIN'inizi girin.  
+          Menüye erişmek için masa numaranızı ve size özel müşteri PIN'inizi
+          girin.
         </p>
 
         {/* Eğer error kutusunun içi doluysa bu div ekranda görünür */}
-        {error && <div style={{ color: '#ff4d4d', backgroundColor: '#331010', padding: '10px', borderRadius: '8px', marginBottom: '15px', border: '1px solid #ff4d4d' }}>{error}</div>}
+        {error && (
+          <div
+            style={{
+              color: "#ff4d4d",
+              backgroundColor: "#331010",
+              padding: "10px",
+              borderRadius: "8px",
+              marginBottom: "15px",
+              border: "1px solid #ff4d4d",
+            }}
+          >
+            {error}
+          </div>
+        )}
 
         {/* Form Alanı */}
         <form onSubmit={handleLogin} className="login-form">
@@ -82,7 +98,15 @@ function CustomerLogin() {
               value={tableNumber}
               onChange={(e) => setTableNumber(e.target.value)}
               readOnly={isTableLocked} // Kilitliyse müdahale edilemez
-              style={isTableLocked ? { backgroundColor: '#2a2a2a', color: '#888', cursor: 'not-allowed' } : {}}
+              style={
+                isTableLocked
+                  ? {
+                      backgroundColor: "#2a2a2a",
+                      color: "#888",
+                      cursor: "not-allowed",
+                    }
+                  : {}
+              }
             />
           </div>
           <div className="input-group">
